@@ -28,13 +28,3 @@ spec:
               value: pipelines-vote-api
             - name: VOTING_API_SERVICE_PORT
               value: "9000"
-  volumeClaimTemplates:
-    - metadata:
-        name: vote-app-storage-claim
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: ocs-storagecluster-cephfs
-        resources:
-          requests:
-            storage: 1Gi
