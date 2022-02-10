@@ -5,6 +5,8 @@ metadata:
     app: pipelines-vote-ui
   name: pipelines-vote-ui
 spec:
+  selector:
+    name: pipelines-vote-ui
   template: 
     metadata:
       labels:
