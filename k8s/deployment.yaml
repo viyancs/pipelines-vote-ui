@@ -1,18 +1,14 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
 metadata:
   labels:
     app: pipelines-vote-ui
   name: pipelines-vote-ui
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: pipelines-vote-ui
-  template:
+  template: 
     metadata:
       labels:
-        app: pipelines-vote-ui
+        name: "pipelines-vote-ui"
     spec:
       containers:
         - image: quay.io/openshift-pipeline/vote-ui:latest
@@ -28,13 +24,9 @@ spec:
               value: pipelines-vote-api
             - name: VOTING_API_SERVICE_PORT
               value: "9000"
-  volumeClaimTemplates:
-    - metadata:
-        name: vote-app-storage-claim
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: ocs-storagecluster-cephfs
-        resources:
-          requests:
-            storage: 1Gi
+  replicas: 1
+  strategy: 
+    type: "Rolling"
+  paused: false 
+  revisionHistoryLimit: 2 
+  minReadySeconds: 0 
