@@ -1,34 +1,29 @@
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   labels:
     app: pipelines-vote-ui
   name: pipelines-vote-ui
 spec:
+  replicas: 1
   selector:
-    name: pipelines-vote-ui
-  template: 
+    matchLabels:
+      app: pipelines-vote-ui
+  template:
     metadata:
       labels:
-        name: "pipelines-vote-ui"
+        app: pipelines-vote-ui
     spec:
       containers:
-        - image: quay.io/openshift-pipeline/vote-ui:latest
-          imagePullPolicy: Always
-          name: pipelines-vote-ui
-          ports:
-            - containerPort: 8080
-              protocol: TCP
-            - containerPort: 9090
-              protocol: TCP
-          env:
-            - name: VOTING_API_SERVICE_HOST
-              value: pipelines-vote-api
-            - name: VOTING_API_SERVICE_PORT
-              value: "9000"
-  replicas: 1
-  strategy: 
-    type: "Rolling"
-  paused: false 
-  revisionHistoryLimit: 2 
-  minReadySeconds: 0 
+      - name: pipelines-vote-ui
+        image: quay.io/openshift-pipeline/vote-ui:latest
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 9090
+          protocol: TCP
+        env:
+        - name: VOTING_API_SERVICE_HOST
+          value: pipelines-vote-api
+        - name: VOTING_API_SERVICE_PORT
+          value: "9000"
